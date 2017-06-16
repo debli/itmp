@@ -2,27 +2,23 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static int size_a(int * data);
 static void printa(int * data, int size);
 void swap(int * a, int * b);
 int part(int* data, int size, int low, int high);
 void _quick_sort(int* data, int size, int low, int high);
-static void quick_sort(int* data);
+static void quick_sort(int* data, int size);
 
 int main (void)
 {
     int data[] = {1, 5, 9, 10, 3, 4, 1, 6};
 
-    quick_sort(data);
+    int sizea = sizeof(data)/sizeof(data[0]);
+
+    quick_sort(data, sizea);
     
-    printa(data, size_a(data));
+    printa(data, sizea);
 
     return 0;
-}
-
-static int size_a(int * data)
-{
-    return sizeof(data)/sizeof(data[0]);
 }
 
 static void printa(int * data, int size)
@@ -33,9 +29,8 @@ static void printa(int * data, int size)
     }
 }
 
-static void quick_sort(int* data)
+static void quick_sort(int* data, int size)
 {
-    int size = size_a(data);
     _quick_sort(data, size, 0, size - 1);
 }
 
