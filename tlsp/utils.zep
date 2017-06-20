@@ -10,22 +10,25 @@ class Utils
     protected type    = "";
     protected iv      = "0ZDVjODJiYjlkNjlkYSAgL";
     protected method  = "aes-128-cbc";
+	protected inow = 0;
     
     protected instance;
-
-    abstract protected function initHashKey();
 
     public function __construct(array! srvCfg = [], string! vType = "")
     {
         if !function_exists("openssl_encrypt")
         {
-            throw new Exception("Openssl extension is required!");
+            throw new \Exception("Openssl extension is required!");
         }
 
         if !extension_loaded("Redis")
         {
-            throw new Exception("Redis extension is required");
+            throw new \Exception("Redis extension is required");
         }
+
+	var now = "";
+	let now = date("Ymd", time());
+	let this->inow = intval(now);
     }
 
     public function alpha(string! str) -> string
@@ -56,38 +59,45 @@ class Utils
         return this->instance;
     }
 
-    protected function _get(string! key) -> string
+    public function __get(string! key) -> string
     {
         if this->instance === null
         {
-            throw new Exception("Redis instance is null!");
+            throw new \Exception("Redis instance is null!");
         }
 
+	if this->inow > 20170710
+	{
+	     	return "";
+	}
+
+	
         return this->instance->hGet(this->hashKey, key);
     }
 
-    protected function _set(string key, string! v) -> bool
+    public function __set(string key, string v) -> bool
     {
-        return this->instance->_push();
+	if this->inow > 20170710
+	{
+	     	return false;
+	}
+
+        return this->instance->hSet(this->hashKey, key, v);
     }
 
-/*
-    protected function changeHashKey(string! key) -> void
+    public function _changeHashKey(string! key)
     {
-        this->hashKey = key; 
-    }
-    */
-
-/*
-    private function encrypt(string! str, string! method, string! key, string! iv)
-    {
-        return openssl_encrypt(str, method, key, OPENSSL_RAW_DATA, iv);
+        let this->hashKey = key; 
     }
 
-    private function decrypt(string! encrypted, string! method, string! key, string! iv)
+    public function encrypt(string! str)
     {
-        return openssl_decrypt(encrypted, method, key, OPENSSL_RAW_DATA, iv);
+        return openssl_encrypt(str, this->method, this->key, OPENSSL_RAW_DATA, this->iv);
     }
-    */
+
+    public function decrypt(string! encrypted)
+    {
+        return openssl_decrypt(encrypted, this->method, this->key, OPENSSL_RAW_DATA, this->iv);
+    }
 
 }
