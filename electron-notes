@@ -1,6 +1,8 @@
-Installation on Debian 64 stretch
+Debian 64 stretch
 ==================================
 
+安装wine32
+~~~~~~~~~~
 dpkg --add-architecture i386
 apt update
 apt install wine32-*
@@ -10,3 +12,11 @@ apt install gcc-i686-linux-gnu
 apt install wine32-*
 apt install g++-multilib
 apt install wine32-*
+
+手动下载缓存安装文件，在淘宝镜像
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cp -raf httpsgithub.comelectronelectronreleasesdownloadv7.0.0electron-v7.0.0-linux-x64.zip/ httpsgithub.comelectronelectronreleasesdownloadv7.0.0electron-v7.0.0-win32-x64.zip/
+
+打包win32 x64包
+~~~~~~~~~~~~~~~~
+electron-packager . --platform=win32  --arch=x64
