@@ -1,0 +1,12 @@
+Installation on Debian 64 stretch
+==================================
+
+dpkg --add-architecture i386
+apt update
+apt install wine32-*
+apt dist-upgrade 
+apt install wine32-*
+apt install gcc-i686-linux-gnu 
+apt install wine32-*
+apt install g++-multilib
+apt install wine32-*
